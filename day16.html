@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 16 — Magic Wand Reveal ✨💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to top, #ffe0e6, #ffb6c1);
+    overflow: hidden;
+    min-height: 100vh;
+    cursor: crosshair;
+    text-align: center;
+    color: #fff;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.3em;
+    margin: 20px 0;
+    color: #ff1493;
+    z-index: 2;
+    position: relative;
+  }
+
+  #canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Pacifico', cursive;
+    font-size: 2em;
+    color: #ff1493;
+    display: none;
+    text-align: center;
+    z-index: 2;
+  }
+
+  button.home-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+    z-index: 2;
+  }
+
+  button.home-btn:hover { transform: scale(1.05); background: #ff85c1; }
+</style>
+</head>
+<body>
+
+<h1>Day 16 — Magic Wand Reveal ✨💖</h1>
+<canvas id="canvas"></canvas>
+<div id="message">💖 You are my magic! 💖</div>
+<button class="home-btn" onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let sparks = [];
+let drawCount = 0;
+
+// Hidden message coordinates
+const messageText = "LOVE YOU 💖";
+const messageCanvas = document.createElement('canvas');
+const messageCtx = messageCanvas.getContext('2d');
+messageCanvas.width = canvas.width;
+messageCanvas.height = canvas.height;
+messageCtx.font = "bold 100px Pacifico";
+messageCtx.fillStyle = "white";
+messageCtx.textAlign = "center";
+messageCtx.fillText(messageText, canvas.width/2, canvas.height/2);
+
+// Extract message pixel positions
+const imageData = messageCtx.getImageData(0,0,canvas.width,canvas.height);
+const pixels = [];
+for(let y=0; y<canvas.height; y+=8){
+  for(let x=0; x<canvas.width; x+=8){
+    const i = (y*canvas.width + x)*4;
+    if(imageData.data[i+3] > 128){
+      pixels.push({x:x, y:y});
+    }
+  }
+}
+
+document.addEventListener('mousemove', (e) => {
+  const wandX = e.clientX;
+  const wandY = e.clientY;
+
+  // random spark near wand
+  sparks.push({
+    x: wandX + (Math.random()*20-10),
+    y: wandY + (Math.random()*20-10),
+    size: Math.random()*8 + 4,
+    color: `hsl(${Math.random()*360},100%,75%)`,
+    alpha:1
+  });
+
+  // add spark to hidden message pixels gradually
+  if(drawCount < pixels.length){
+    for(let i=0;i<5;i++){
+      sparks.push({
+        x: pixels[drawCount].x,
+        y: pixels[drawCount].y,
+        size: 6,
+        color: '#ff1493',
+        alpha:1
+      });
+      drawCount++;
+    }
+  }
+
+  // show message when fully revealed
+  if(drawCount >= pixels.length){
+    document.getElementById('message').style.display='block';
+  }
+});
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0;i<sparks.length;i++){
+    const s = sparks[i];
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+    ctx.fillStyle = `rgba(255,20,147,${s.alpha})`;
+    ctx.fill();
+    s.alpha -=0.02;
+    if(s.alpha <=0){
+      sparks.splice(i,1);
+      i--;
+    }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+</script>
+
+</body>
+</html>

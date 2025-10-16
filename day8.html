@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 8 — Message in the Stars ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at bottom, #0a0a2a, #1a1a3d);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #fff;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  h1 { font-family: 'Pacifico', cursive; font-size: 2.3em; margin-bottom: 20px; }
+
+  .sky {
+    position: relative;
+    width: 100vw;
+    height: 60vh;
+  }
+
+  .star {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: transform 0.3s, background 0.3s;
+    box-shadow: 0 0 10px #fff;
+    animation: twinkle 2s infinite alternate;
+  }
+
+  .star:hover { transform: scale(1.4); }
+
+  @keyframes twinkle {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
+
+  .message {
+    font-size: 1.2em;
+    opacity: 0;
+    transition: opacity 0.7s;
+    max-width: 400px;
+    margin-top: 20px;
+  }
+
+  .message.show { opacity: 1; }
+
+  button {
+    margin-top: 20px;
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+  }
+
+  button:hover { transform: scale(1.05); background: #ff85c1; }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+</style>
+</head>
+<body>
+
+<h1>Day 8 — Message in the Stars ✨</h1>
+
+<div class="sky" id="sky"></div>
+<div id="message" class="message"></div>
+
+<button onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+// Shayaris for each star
+const starsData = [
+  {shayari: "दुख की शाम हो या हो सुख का सवेरा\nसब कुछ अच्छा लगता हैं जब साथ हो तेरा !!"},
+  {shayari: "जाने मेरा ये दिल कहा खो गया\nतुझे पहली दफा देखा और तेरा ही हो गया !!"},
+  {shayari: "उम्मीद है तुझसे ही, तुझसे ही मेरा ख्वाब है\nतू दिल की धड़कन है, रहना अब तेरे साथ है !!"},
+  {shayari: "Tera haath pakadkar duniya jeet sakta hoon,\nBas tu keh de to har mushkil se lad sakta hoon."},
+  {shayari: "कितना प्यार करते है तुमसे, यह कहना नही आता\nबस इतना जानते है बिना तुम्हारे रहना नही आता !!"}
+];
+
+const sky = document.getElementById('sky');
+const messageDiv = document.getElementById('message');
+let revealedCount = 0;
+
+// Create stars
+starsData.forEach((data) => {
+  const star = document.createElement('div');
+  star.classList.add('star');
+  star.style.left = Math.random() * 90 + 'vw';
+  star.style.top = Math.random() * 50 + 'vh';
+  star.dataset.shayari = data.shayari;
+  sky.appendChild(star);
+});
+
+// Click to reveal shayari
+sky.addEventListener('click', e => {
+  if(!e.target.classList.contains('star') || e.target.dataset.revealed === "true") return;
+  const shayari = e.target.dataset.shayari;
+  messageDiv.textContent = shayari;
+  messageDiv.classList.add('show');
+  e.target.style.background = '#ff69b4';
+  e.target.dataset.revealed = "true";
+  revealedCount++;
+
+  launchHearts(10);
+
+  if(revealedCount === starsData.length){
+    launchHearts(30); // celebration when all stars clicked
+  }
+});
+
+// Hearts function
+function launchHearts(count){
+  for(let i=0;i<count;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*80 + 'vw';
+    heart.style.top = Math.random()*60 + 'vh';
+    heart.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+    heart.innerHTML = '❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>

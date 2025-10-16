@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 4 — The Whisper of Love 🎧</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffb6c1, #d8b4fe);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.3em;
+      margin-bottom: 20px;
+    }
+
+    .heart {
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at 30% 30%, #ff69b4, #ff1493);
+      transform: rotate(45deg);
+      position: relative;
+      margin-bottom: 20px;
+      animation: pulse 1.2s infinite;
+    }
+    .heart::before, .heart::after {
+      content: "";
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at 30% 30%, #ff69b4, #ff1493);
+      border-radius: 50%;
+      position: absolute;
+    }
+    .heart::before { top: -40px; left: 0; }
+    .heart::after { top: 0; left: -40px; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1) rotate(45deg); }
+      50% { transform: scale(1.15) rotate(45deg); }
+    }
+
+    button {
+      background: #ff69b4;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 30px;
+      color: white;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(255,105,180,0.6);
+      margin-bottom: 20px;
+    }
+    button:hover { transform: scale(1.05); background: #ff85c1; }
+
+    .caption {
+      font-size: 1.2em;
+      opacity: 0;
+      transition: 1s;
+      max-width: 350px;
+    }
+    .caption.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <h1>Day 4 — The Whisper of Love 🎧</h1>
+
+  <div class="heart"></div>
+
+  <button id="playBtn">Play Whisper 💌</button>
+  <div id="caption" class="caption">I hope this little whisper makes your heart smile 💖</div>
+
+  <button onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+  <audio id="whisperAudio">
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const playBtn = document.getElementById('playBtn');
+    const audio = document.getElementById('whisperAudio');
+    const caption = document.getElementById('caption');
+
+    playBtn.addEventListener('click', () => {
+      audio.play();
+      playBtn.style.display = 'none';
+    });
+
+    audio.addEventListener('ended', () => {
+      caption.classList.add('show');
+    });
+  </script>
+
+</body>
+</html>

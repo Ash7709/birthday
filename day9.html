@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 9 — Balloon Pop Surprise 🎈</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to top, #87ceeb, #f0f8ff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    color: #fff;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  h1 { font-family: 'Pacifico', cursive; font-size: 2.3em; margin: 20px 0; color: #ff69b4; }
+
+  .balloon-container {
+    position: relative;
+    width: 100vw;
+    height: 70vh;
+  }
+
+  .balloon {
+    position: absolute;
+    width: 60px;
+    height: 80px;
+    border-radius: 50% 50% 50% 50%;
+    background-color: #ff69b4;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    color: #fff;
+    transition: transform 0.3s, opacity 0.3s;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-20px); }
+  }
+
+  .balloon:hover { transform: scale(1.2); }
+
+  button {
+    margin-top: 20px;
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+  }
+
+  button:hover { transform: scale(1.05); background: #ff85c1; }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+</style>
+</head>
+<body>
+
+<h1>Day 9 — Balloon Pop Surprise 🎈</h1>
+
+<div class="balloon-container" id="balloons"></div>
+
+<button onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const messages = [
+  "💖 You make me smile!",
+  "✨ Forever yours",
+  "🌸 My sunshine",
+  "💞 Always together",
+  "❤️ Love you loads",
+  "😊 You’re my happiness",
+  "💓 Can’t live without you"
+];
+
+const container = document.getElementById('balloons');
+let poppedCount = 0;
+
+// Create balloons
+messages.forEach((msg) => {
+  const balloon = document.createElement('div');
+  balloon.classList.add('balloon');
+  balloon.style.left = Math.random() * 90 + 'vw';
+  balloon.style.animationDuration = (5 + Math.random() * 5) + 's';
+  balloon.dataset.message = msg;
+  container.appendChild(balloon);
+});
+
+// Click balloon to pop
+container.addEventListener('click', e => {
+  if(!e.target.classList.contains('balloon')) return;
+  const msg = e.target.dataset.message;
+  alert(msg); // you can replace alert with a div/message display
+  e.target.style.opacity = 0;
+  e.target.style.pointerEvents = 'none';
+  poppedCount++;
+  launchHearts(5);
+
+  if(poppedCount === messages.length){
+    launchHearts(30); // celebration when all popped
+  }
+});
+
+// Hearts function
+function launchHearts(count){
+  for(let i=0;i<count;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*80 + 'vw';
+    heart.style.top = Math.random()*60 + 'vh';
+    heart.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+    heart.innerHTML = '❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>

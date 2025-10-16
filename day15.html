@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 15 — Secret Love Notes Scroll 📜💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #fdf5e6; /* parchment color */
+    min-height: 100vh;
+    text-align: center;
+    overflow: hidden;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.3em;
+    margin: 20px 0;
+    color: #ff1493;
+  }
+
+  .scroll {
+    position: relative;
+    width: 350px;
+    height: 450px;
+    background: url('scroll-bg.jpg') no-repeat center/cover; /* your scroll image */
+    border: 2px solid #d2b48c;
+    border-radius: 15px;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  .note {
+    background: #fff8dc;
+    border: 1px dashed #ff69b4;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px auto;
+    cursor: pointer;
+    color: transparent; /* hide text initially */
+    text-shadow: 0 0 0 #fff8dc; /* hide text */
+    transition: all 0.5s;
+}
+
+.note.revealed {
+    color: #333; /* reveal text */
+    text-shadow: none;
+    background: #ffe6f0;
+    opacity: 1;
+}
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+
+  button.home-btn {
+    margin-top: 20px;
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+    z-index: 1;
+  }
+
+  button.home-btn:hover { transform: scale(1.05); background: #ff85c1; }
+</style>
+</head>
+<body>
+
+<h1>Day 15 — Secret Love Notes Scroll 📜💖</h1>
+
+<div class="scroll" id="scrollContainer"></div>
+
+<button class="home-btn" onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const notesData = [
+  "💖 You are my sunshine!",
+  "🌸 Forever together",
+  "💞 Love you endlessly",
+  "✨ Every moment counts with you",
+  "❤️ You complete me",
+  "😊 Happiness is you"
+];
+
+const scrollContainer = document.getElementById('scrollContainer');
+let revealedCount = 0;
+
+// create notes
+notesData.forEach((msg, i) => {
+  const note = document.createElement('div');
+  note.classList.add('note');
+  note.textContent = msg;
+  scrollContainer.appendChild(note);
+
+  note.addEventListener('click', () => {
+    if(!note.classList.contains('revealed')){
+      note.classList.add('revealed');
+      launchHearts(5);
+      revealedCount++;
+      if(revealedCount === notesData.length){
+        launchHearts(30); // big celebration
+      }
+    }
+  });
+});
+
+// hearts animation
+function launchHearts(count){
+  for(let i=0;i<count;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*80 + 'vw';
+    heart.style.top = Math.random()*60 + 'vh';
+    heart.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+    heart.innerHTML = '❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>

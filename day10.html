@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 10 — Message in a Bottle 🥰</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to top, #00c6ff, #0072ff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  h1 { font-family: 'Pacifico', cursive; font-size: 2.3em; margin-bottom: 30px; }
+
+  .bottle-container {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    cursor: pointer;
+  }
+
+  .bottle {
+    width: 100%;
+    height: 100%;
+    background-image: url('bottle.png'); /* replace with your bottle image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: transform 0.5s;
+  }
+
+  .message {
+    font-size: 1.2em;
+    max-width: 400px;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.7s;
+  }
+
+  .message.show { opacity: 1; }
+
+  button {
+    margin-top: 30px;
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+  }
+
+  button:hover { transform: scale(1.05); background: #ff85c1; }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+</style>
+</head>
+<body>
+
+<h1>Day 10 — Message in a Bottle 🥰</h1>
+
+<div class="bottle-container" id="bottleContainer">
+  <div class="bottle" id="bottle"></div>
+</div>
+
+<div id="message" class="message"></div>
+
+<button onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const messages = [
+  "तुम मेरी जिंदगी का सबसे खूबसूरत हिस्सा हो ❤️",
+  "हर पल तुम्हारे साथ जादुई लगता है ✨",
+  "तुम्हारी मुस्कान मेरी खुशियों की वजह है 😊",
+  "तुम हो तो हर दिन खास है 💖",
+  "बस तुम्हारे बिना नहीं रह सकता 💞"
+];
+
+let currentMessage = 0;
+const bottle = document.getElementById('bottle');
+const messageDiv = document.getElementById('message');
+const bottleContainer = document.getElementById('bottleContainer');
+
+bottleContainer.addEventListener('click', () => {
+  if(currentMessage < messages.length){
+    messageDiv.textContent = messages[currentMessage];
+    messageDiv.classList.add('show');
+    bottle.style.transform = `rotate(${Math.random()*10-5}deg) translateY(-10px)`;
+    launchHearts(10);
+    currentMessage++;
+  } else {
+    // All messages read
+    launchHearts(40); // big celebration
+  }
+});
+
+// Hearts function
+function launchHearts(count){
+  for(let i=0;i<count;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*80 + 'vw';
+    heart.style.top = Math.random()*60 + 'vh';
+    heart.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+    heart.innerHTML = '❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>

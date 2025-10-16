@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 14 — Message Rain 🌧️💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to top, #ffe0e6, #ffb6c1);
+    overflow: hidden;
+    min-height: 100vh;
+    text-align: center;
+    color: #fff;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.3em;
+    margin: 20px 0;
+    color: #ff1493;
+  }
+
+  .envelope {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('envelope.png'); /* replace with your envelope image */
+    background-size: cover;
+    cursor: pointer;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+
+  #messageBox {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff5;
+    color: black;
+    padding: 12px 25px;
+    border-radius: 15px;
+    font-size: 1.2em;
+    display: none;
+  }
+
+  button.home-btn {
+    margin-top: 20px;
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+    z-index: 1;
+  }
+
+  button.home-btn:hover { transform: scale(1.05); background: #ff85c1; }
+</style>
+</head>
+<body>
+
+<h1>Day 14 — Message Rain 🌧️💌</h1>
+
+<div id="messageBox"></div>
+<button class="home-btn" onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const messages = [
+  "💖 You make my heart smile!",
+  "🌸 Forever and always yours",
+  "💞 Together is my favorite place",
+  "✨ You light up my world",
+  "❤️ Love you endlessly",
+  "😊 Every moment with you is magic"
+];
+
+const envelopeCount = messages.length;
+let clickedCount = 0;
+const body = document.body;
+const messageBox = document.getElementById('messageBox');
+
+// Create envelopes falling from top
+messages.forEach((msg, i) => {
+  const env = document.createElement('div');
+  env.classList.add('envelope');
+  env.style.left = Math.random() * 80 + 'vw';
+  env.style.top = -50 + 'px';
+  env.dataset.msg = msg;
+  body.appendChild(env);
+
+  // Click envelope
+  env.addEventListener('click', () => {
+    messageBox.textContent = msg;
+    messageBox.style.display = 'block';
+    setTimeout(()=>{ messageBox.style.display = 'none'; }, 2000);
+    env.style.opacity = 0;
+    env.style.pointerEvents = 'none';
+    clickedCount++;
+    launchHearts(5);
+
+    if(clickedCount === envelopeCount){
+      launchHearts(30); // big celebration
+    }
+  });
+});
+
+// Animate envelopes falling
+function animateEnvelopes(){
+  const envelopes = document.querySelectorAll('.envelope');
+  envelopes.forEach(env => {
+    if(env.style.opacity !== "0"){
+      let y = parseFloat(env.style.top);
+      y += 0.5 + Math.random()*0.5; // speed
+      if(y > window.innerHeight){
+        y = -50; // reset to top
+        env.style.left = Math.random()*80 + 'vw';
+      }
+      env.style.top = y + 'px';
+    }
+  });
+  requestAnimationFrame(animateEnvelopes);
+}
+animateEnvelopes();
+
+// Hearts animation
+function launchHearts(count){
+  for(let i=0;i<count;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*80 + 'vw';
+    heart.style.top = Math.random()*60 + 'vh';
+    heart.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+    heart.innerHTML = '❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>

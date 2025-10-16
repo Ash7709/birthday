@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 5 — Reveal the Memory 🧩</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffb6c1, #d8b4fe);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  h1 { font-family: 'Pacifico', cursive; font-size: 2.3em; margin-bottom: 20px; }
+
+  .puzzle-container {
+    display: grid;
+    grid-template-columns: repeat(3, 110px);
+    grid-template-rows: repeat(3, 110px);
+    gap: 8px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tile {
+    width: 110px;
+    height: 110px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-image: url('puzzle.jpg'); /* your image */
+    background-size: 330px 330px;
+    filter: brightness(0%);
+    transition: filter 0.5s, transform 0.3s;
+  }
+
+  .tile:hover { transform: scale(1.05); }
+
+  .tile.revealed { filter: brightness(100%); }
+
+  .caption {
+    font-size: 1.2em;
+    opacity: 0;
+    transition: 1s;
+    max-width: 350px;
+    position: relative;
+    z-index: 1;
+    margin-top: 20px;
+  }
+
+  .caption.show { opacity: 1; }
+
+  button {
+    margin-top: 20px;
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+    position: relative;
+    z-index: 1;
+  }
+
+  button:hover { transform: scale(1.05); background: #ff85c1; }
+
+  /* Hearts animation */
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  @keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+</style>
+</head>
+<body>
+
+<h1>Day 5 — Reveal the Memory 🧩</h1>
+<div class="puzzle-container" id="puzzle"></div>
+<div id="caption" class="caption">Every piece of me is yours 💖</div>
+<button onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const puzzle = document.getElementById('puzzle');
+const caption = document.getElementById('caption');
+
+// Create 9 tiles
+for(let i=0;i<9;i++){
+  const tile = document.createElement('div');
+  tile.classList.add('tile');
+  // Set correct background position
+  const row = Math.floor(i/3);
+  const col = i%3;
+  tile.style.backgroundPosition = `${-col*110}px ${-row*110}px`;
+  tile.dataset.revealed = "false";
+  puzzle.appendChild(tile);
+}
+
+// Click to reveal logic
+let revealedCount = 0;
+puzzle.addEventListener('click', e => {
+  const tile = e.target;
+  if(!tile.classList.contains('tile') || tile.dataset.revealed === "true") return;
+
+  tile.classList.add('revealed');
+  tile.dataset.revealed = "true";
+  revealedCount++;
+
+  if(revealedCount === 9){
+    caption.classList.add('show');
+    launchHearts(30);
+  }
+});
+
+// Hearts function
+function launchHearts(count){
+  for(let i=0;i<count;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*80 + 'vw';
+    heart.style.top = Math.random()*60 + 'vh';
+    heart.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+    heart.innerHTML = '❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>

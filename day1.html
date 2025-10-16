@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 1 — The Beginning 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffb6c1, #e5b4ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    p {
+      max-width: 600px;
+      font-size: 1.1em;
+      margin-bottom: 30px;
+    }
+    button {
+      background: #ff69b4;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 30px;
+      color: white;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: #ff85c1;
+    }
+    .hidden {
+      display: none;
+      animation: fadeIn 1s ease forwards;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    .hearts {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    .hearts span {
+      position: absolute;
+      bottom: -50px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255,255,255,0.8);
+      animation: float 10s linear infinite;
+      border-radius: 50%;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-1000px) scale(0.8); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts"></div>
+  <h1>Day 1 — The Beginning 💌</h1>
+  <p>
+    Every love story has a beginning.<br>
+    Ours began the moment our souls found each other.<br><br>
+    This 22-day journey is a love quest — a trail of surprises leading to your birthday,<br>
+    where every step tells a story of <b>us</b>.
+  </p>
+
+  <button id="startBtn">Start the Love Quest 💕</button>
+  <p id="hiddenMsg" class="hidden">
+    Welcome, my princess <b>Zansi 💞</b> — Day 1 is just the start.<br>
+    Tomorrow, your first real surprise awaits... 💫
+  </p>
+  <br>
+  <button id="homeBtn" class="hidden" onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c6b4e7239d.mp3?filename=romantic-piano-ambient-112199.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const btn = document.getElementById("startBtn");
+    const msg = document.getElementById("hiddenMsg");
+    const homeBtn = document.getElementById("homeBtn");
+    const music = document.getElementById("bgMusic");
+
+    btn.addEventListener("click", () => {
+      btn.style.display = "none";
+      msg.classList.remove("hidden");
+      homeBtn.classList.remove("hidden");
+      music.play();
+      createHearts();
+    });
+
+    function createHearts(){
+      const hearts = document.querySelector('.hearts');
+      for(let i=0; i<15; i++){
+        const span = document.createElement('span');
+        span.style.left = Math.random() * 100 + '%';
+        span.style.animationDelay = Math.random() * 5 + 's';
+        span.style.width = span.style.height = 15 + Math.random() * 20 + 'px';
+        hearts.appendChild(span);
+      }
+    }
+  </script>
+</body>
+</html>

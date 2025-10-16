@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 18 — Our Song 🎵💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffb6c1, #ffe0e6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    color: #fff;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #ff1493;
+  }
+
+  button {
+    background: #ff69b4;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+  }
+
+  button:hover {
+    transform: scale(1.05);
+    background: #ff85c1;
+  }
+
+  #homeBtn {
+    margin-top: 50px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Day 18 — Our Song 🎵💖</h1>
+
+<button id="playSong">Play Our Song 💖</button>
+
+<audio id="loveSong" loop>
+  <source src="song.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<button id="homeBtn" onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const song = document.getElementById('loveSong');
+const playBtn = document.getElementById('playSong');
+
+playBtn.addEventListener('click', ()=>{
+  if(song.paused){
+    song.play();
+    playBtn.innerText = "Pause Our Song 💖";
+  } else {
+    song.pause();
+    playBtn.innerText = "Play Our Song 💖";
+  }
+});
+</script>
+
+</body>
+</html>

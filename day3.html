@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day 3 — The First Memory 💭</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffb6c1, #d8b4fe);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.3em;
+      margin-bottom: 10px;
+    }
+
+    .memory-img {
+      width: 280px;
+      height: 280px;
+      object-fit: cover;
+      border-radius: 20px;
+      filter: blur(15px);
+      transition: filter 1s ease;
+      margin-bottom: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255,105,180,0.4);
+    }
+
+    button {
+      background: #ff69b4;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 30px;
+      color: white;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(255,105,180,0.6);
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background: #ff85c1;
+    }
+
+    .caption {
+      font-size: 1.2em;
+      opacity: 0;
+      transition: 1s;
+      max-width: 350px;
+    }
+
+    .caption.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Day 3 — The First Memory 💭</h1>
+  <img src="memory.jpg" alt="Our Memory" id="memoryImg" class="memory-img">
+
+
+  <button id="revealBtn">Reveal Memory 💖</button>
+  <div id="caption" class="caption">Remember this day? That moment when we laughed endlessly… 💖</div>
+
+  <button onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+  <audio id="bgMusic" loop autoplay>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c6b4e7239d.mp3?filename=romantic-piano-ambient-112199.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const btn = document.getElementById('revealBtn');
+    const img = document.getElementById('memoryImg');
+    const caption = document.getElementById('caption');
+    const music = document.getElementById('bgMusic');
+
+    music.play();
+
+    btn.addEventListener('click', () => {
+      img.style.filter = 'blur(0px)';
+      caption.classList.add('show');
+      btn.style.display = 'none';
+    });
+  </script>
+</body>
+</html>

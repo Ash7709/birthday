@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>22 Days of Love Quest for My Princess Zansi 💕</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #ffb6c1;
+      --purple: #d8b4fe;
+      --deep-pink: #ff69b4;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5em;
+      margin-top: 20px;
+      color: white;
+    }
+
+    .countdown {
+      margin: 15px 0 30px;
+      font-size: 1.3em;
+      font-weight: 500;
+    }
+
+    .days-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 15px;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .day {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 15px;
+      padding: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #fff;
+      transition: 0.3s;
+      backdrop-filter: blur(4px);
+    }
+
+    .day:hover {
+      background: var(--deep-pink);
+      transform: scale(1.05);
+    }
+
+    .locked {
+      opacity: 0.6;
+    }
+
+    .music-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      border-radius: 30px;
+      color: #fff;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <h1>22 Days of Love Quest for My Princess Zansi 💕</h1>
+  <p class="countdown">Countdown to Your Birthday (Nov 5): <span id="timer"></span></p>
+
+  <div class="days-container" id="daysContainer"></div>
+
+  <button class="music-control" id="musicBtn">🔊 Music On</button>
+
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c6b4e7239d.mp3?filename=romantic-piano-ambient-112199.mp3" type="audio/mpeg">
+  </audio>
+
+  <footer>Made with endless love by Ashish 💖</footer>
+
+  <script>
+    // ===== Countdown Timer =====
+    const countdown = document.getElementById("timer");
+    const targetDate = new Date("November 5, 2025 00:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+      if (distance < 0) {
+        countdown.innerHTML = "🎂 Happy Birthday My Love! 💕";
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // ===== Day Buttons =====
+    const container = document.getElementById("daysContainer");
+    const totalDays = 22;
+    const password = "Zansi@7709";
+
+    for (let i = 1; i <= totalDays; i++) {
+      const btn = document.createElement("div");
+      btn.classList.add("day");
+      btn.textContent = `Day ${i}`;
+      if (i !== 1) btn.classList.add("locked");
+
+      btn.addEventListener("click", () => {
+        if (i === 1) {
+          window.location.href = `day1.html`;
+        } else {
+          const input = prompt("🔐 This day is locked.\nEnter password to unlock:");
+          if (input === password) {
+            window.location.href = `day${i}.html`;
+          } else if (input !== null) {
+            alert("❌ Incorrect password, my love! Try again later 💞");
+          }
+        }
+      });
+      container.appendChild(btn);
+    }
+
+    // ===== Music Control =====
+    const music = document.getElementById("bgMusic");
+    const musicBtn = document.getElementById("musicBtn");
+    let playing = false;
+
+    musicBtn.addEventListener("click", () => {
+      if (!playing) {
+        music.play();
+        playing = true;
+        musicBtn.textContent = "🔇 Music Off";
+      } else {
+        music.pause();
+        playing = false;
+        musicBtn.textContent = "🔊 Music On";
+      }
+    });
+  </script>
+</body>
+</html>

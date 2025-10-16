@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 17 — Shooting Stars 🌠</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at bottom, #0b0c2a, #1a1a3b);
+    overflow: hidden;
+    cursor: crosshair;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.3em;
+    margin: 20px;
+    color: #ff69b4;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #homeBtn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+  }
+
+  #homeBtn:hover { transform: scale(1.05); background: #ff85c1; }
+</style>
+</head>
+<body>
+
+<h1>Day 17 — Shooting Stars 🌠</h1>
+<canvas id="canvas"></canvas>
+<button id="homeBtn" onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+let connections = [];
+let starCount = 0;
+const maxStars = 5; // number of clicks to complete heart
+
+// Heart shape coordinates (normalized)
+const heartPoints = [];
+for(let t=0; t<Math.PI*2; t+=0.1){
+  const x = 16*Math.pow(Math.sin(t),3);
+  const y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
+  heartPoints.push({x:x, y:-y}); // invert y
+}
+
+// Scale heart to center
+function scaleHeart(){
+  const scaled = heartPoints.map(p=>{
+    return {
+      x: canvas.width/2 + p.x*15,
+      y: canvas.height/2 + p.y*15
+    };
+  });
+  return scaled;
+}
+const heartScaled = scaleHeart();
+
+function addStar(x,y){
+  stars.push({
+    x:x,
+    y:y,
+    vx:(Math.random()-0.5)*8,
+    vy:-Math.random()*10-2,
+    size:Math.random()*3+2,
+    alpha:1
+  });
+  starCount++;
+  if(starCount>=maxStars){
+    // trigger heart formation
+    connections = heartScaled.slice();
+  }
+}
+
+canvas.addEventListener('click', e=>{
+  addStar(e.clientX,e.clientY);
+});
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Draw shooting stars
+  stars.forEach((s,i)=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+    ctx.fill();
+    s.x += s.vx;
+    s.y += s.vy;
+    s.alpha -=0.02;
+    if(s.alpha<=0){
+      stars.splice(i,1);
+    }
+  });
+
+  // Draw heart connections if complete
+  if(connections.length>0){
+    connections.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,4,0,Math.PI*2);
+      ctx.fillStyle='#ff1493';
+      ctx.fill();
+    });
+    // Add centered message inside heart
+    ctx.font = "bold 40px Pacifico";
+    ctx.fillStyle = "#fff";
+    ctx.textAlign = "center";
+    ctx.fillText("LOVE YOU MY BABY ZANSI 💖", canvas.width/2, canvas.height/2 + 10);
+  }
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
+</script>
+
+</body>
+</html>

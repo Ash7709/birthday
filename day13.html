@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 13 — Magic Love Reveal 🔮</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to top, #ffdde1, #ee9ca7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.3em;
+    margin-bottom: 30px;
+    color: #ff1493;
+  }
+
+  .magic-circle {
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle at center, #ff69b4, #ff1493);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    color: white;
+    user-select: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 25px rgba(255,20,147,0.6);
+  }
+
+  .magic-circle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 40px rgba(255,20,147,0.9);
+  }
+
+  .hidden-content {
+    margin-top: 25px;
+    max-width: 300px;
+    opacity: 0;
+    transition: opacity 1s;
+  }
+
+  .hidden-content.show {
+    opacity: 1;
+  }
+
+  .hidden-content img {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 2s ease-out forwards;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @keyframes float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-150px) scale(1.5); }
+  }
+
+  button.home-btn {
+    margin-top: 30px;
+    background: #ff69b4;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255,105,180,0.6);
+    transition: 0.3s;
+    z-index: 1;
+  }
+
+  button.home-btn:hover { transform: scale(1.05); background: #ff85c1; }
+</style>
+</head>
+<body>
+
+<h1>Day 13 — Magic Love Reveal 🔮</h1>
+
+<div class="magic-circle" id="magicCircle">✨ Reveal Your Surprise ✨</div>
+
+<div class="hidden-content" id="hiddenContent">
+  <img src="magic-surprise.jpg" alt="Magic Surprise"> <!-- replace with your image -->
+  <div>💖 Every moment with you is magical!</div>
+</div>
+
+<button class="home-btn" onclick="window.location.href='index.html'">Back to Home 🏠</button>
+
+<script>
+const magicCircle = document.getElementById('magicCircle');
+const hiddenContent = document.getElementById('hiddenContent');
+
+magicCircle.addEventListener('click', () => {
+  hiddenContent.classList.add('show');
+  magicCircle.style.display = 'none';
+  launchHearts(20); // celebration when revealed
+});
+
+// Hearts animation
+function launchHearts(count){
+  for(let i=0;i<count;i++){
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random()*80 + 'vw';
+    heart.style.top = Math.random()*60 + 'vh';
+    heart.style.color = `hsl(${Math.random()*360}, 100%, 75%)`;
+    heart.innerHTML = '❤️';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>
