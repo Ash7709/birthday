@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 21: Special Video 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #ffe6f0, #fff0f5);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    overflow-y: auto; /* make scrollable */
+    padding: 20px;
+  }
+
+  .back-btn {
+    text-decoration: none;
+    background: #ff6b81;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-bottom: 15px;
+    z-index: 2;
+    position: relative;
+  }
+
+  .back-btn:hover { background: #ff4757; }
+
+  h2 {
+    color: #ff6b81;
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #ff6b81;
+  }
+
+  #gameContainer {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 30px;
+    cursor: pointer;
+    animation: float 5s linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100%); opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-10%); opacity: 0; }
+  }
+
+  #videoContainer {
+    display: none;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  video {
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  #status {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #ff6b81;
+    text-align: center;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">← Back to Home</a>
+<h2>Catch 5 Hearts to Unlock Your Surprise 💖</h2>
+
+<div id="gameContainer"></div>
+<div id="status">Hearts caught: 0 / 5</div>
+
+<div id="videoContainer">
+  <h2>Surprise! 💌</h2>
+  <video id="videoElement" controls>
+    <source src="love.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<script>
+const gameContainer = document.getElementById('gameContainer');
+const status = document.getElementById('status');
+const videoContainer = document.getElementById('videoContainer');
+const video = document.getElementById('videoElement');
+
+let heartsCaught = 0;
+const heartsToCatch = 5;
+
+// Function to create a heart at a random position
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = Math.random() * (gameContainer.clientWidth - 30) + 'px';
+  heart.style.top = Math.random() * (gameContainer.clientHeight - 30) + 'px';
+  heart.innerHTML = '❤️';
+
+  heart.addEventListener('click', () => {
+    heartsCaught++;
+    status.textContent = `Hearts caught: ${heartsCaught} / ${heartsToCatch}`;
+    heart.remove();
+    if(heartsCaught >= heartsToCatch) {
+      // End game
+      gameContainer.style.display = 'none';
+      status.style.display = 'none';
+      videoContainer.style.display = 'block';
+      video.play(); // Play video only after game ends
+      videoContainer.scrollIntoView({behavior:'smooth'}); // scroll to video
+      createConfetti();
+    }
+  });
+
+  gameContainer.appendChild(heart);
+
+  // Remove heart after 4s if not clicked
+  setTimeout(() => { heart.remove(); }, 4000);
+}
+
+// Create hearts every 1.2 seconds
+const heartInterval = setInterval(() => {
+  if(heartsCaught < heartsToCatch) createHeart();
+  else clearInterval(heartInterval);
+}, 1200);
+
+// Simple confetti effect when game ends
+function createConfetti() {
+  for(let i=0;i<50;i++){
+    const confetti = document.createElement('div');
+    confetti.style.position='absolute';
+    confetti.style.width='10px';
+    confetti.style.height='10px';
+    confetti.style.background=['#ff6b81','#ffb6c1','#ffe6f0','#fff0f5'][Math.floor(Math.random()*4)];
+    confetti.style.left=Math.random()*window.innerWidth+'px';
+    confetti.style.top='-10px';
+    confetti.style.opacity=Math.random();
+    confetti.style.borderRadius='50%';
+    confetti.style.zIndex='5';
+    document.body.appendChild(confetti);
+    let top = -10;
+    const fall = setInterval(()=>{
+      top+=5+Math.random()*5;
+      confetti.style.top=top+'px';
+      if(top>window.innerHeight){ clearInterval(fall); confetti.remove(); }
+    },30);
+  }
+}
+</script>
+
+</body>
+</html>

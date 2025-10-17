@@ -1,172 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>22 Days of Love Quest for My Princess Zansi 💕</title>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --pink: #ffb6c1;
-      --purple: #d8b4fe;
-      --deep-pink: #ff69b4;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>22-Day Love Journey — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 26px;
+    background: linear-gradient(to bottom, #ffe6f0, #fff0f5);
+    position: relative;
+  }
+  header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    max-width:1000px;
+    margin:0 auto 18px;
+  }
+  h1 { margin:0; color:#ff6b81; font-family:'Pacifico',cursive; font-size:26px; }
+  .controls { display:flex; gap:10px; align-items:center; }
+  .btn {
+    padding:10px 14px;
+    border-radius:12px;
+    font-weight:600;
+    text-decoration:none;
+    color:white;
+    background:#ff6b81;
+    border:none;
+    cursor:pointer;
+  }
+  .btn:active{ transform: translateY(1px) }
+  .btn.ghost { background: #fff; color:#ff6b81; border:2px solid #ff6b81; }
+  .admin-indicator { font-size:13px; color:#333; background:#fff3f6; padding:6px 10px; border-radius:10px; border:1px solid #ffd1dd; }
+  #days-container { max-width:1000px; margin:18px auto; display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+  .day-btn {
+    display:inline-block;
+    padding:12px 18px;
+    border-radius:16px;
+    font-weight:700;
+    color:white;
+    background:#ff6b81;
+    text-decoration:none;
+    transition:0.18s;
+    min-width:88px;
+    text-align:center;
+  }
+  .day-btn:hover { transform:translateY(-3px); background:#ff4757; }
+  .locked { background:#d8d8d8; color:#888; pointer-events:none; cursor:default; box-shadow:none; transform:none; }
+  .today { box-shadow:0 0 18px 6px rgba(255,107,129,0.18); animation:glow 1.5s infinite alternate; }
+  @keyframes glow { 0% { box-shadow:0 0 8px 3px rgba(255,107,129,0.12);} 100% { box-shadow:0 0 18px 8px rgba(255,107,129,0.18);} }
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, var(--pink), var(--purple));
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      overflow-x: hidden;
-    }
+  .timers { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:18px; }
+  .timer-box { background:white; padding:14px 18px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.08); min-width:220px; }
+  .timer-box h3 { margin:4px 0 8px; color:#ff6b81; font-size:16px; }
+  .time { font-size:22px; color:#ff6b81; font-weight:700; }
 
-    h1 {
-      font-family: 'Pacifico', cursive;
-      font-size: 2.5em;
-      margin-top: 20px;
-      color: white;
-    }
+  /* modal */
+  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; z-index:9999; }
+  .modal { background:white; padding:18px; border-radius:12px; width:320px; box-shadow:0 12px 40px rgba(0,0,0,0.25); }
+  .modal h4 { margin:0 0 10px; color:#ff6b81; }
+  .modal input { width:100%; padding:10px 12px; margin-bottom:10px; border-radius:8px; border:1px solid #e0e0e0; }
+  .modal .row { display:flex; gap:8px; justify-content:flex-end; }
 
-    .countdown {
-      margin: 15px 0 30px;
-      font-size: 1.3em;
-      font-weight: 500;
-    }
-
-    .days-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-      gap: 15px;
-      width: 90%;
-      max-width: 600px;
-    }
-
-    .day {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 15px;
-      padding: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #fff;
-      transition: 0.3s;
-      backdrop-filter: blur(4px);
-    }
-
-    .day:hover {
-      background: var(--deep-pink);
-      transform: scale(1.05);
-    }
-
-    .locked {
-      opacity: 0.6;
-    }
-
-    .music-control {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.2);
-      border: none;
-      border-radius: 30px;
-      color: #fff;
-      padding: 8px 15px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    footer {
-      margin-top: 40px;
-      font-size: 0.9em;
-      opacity: 0.9;
-    }
-  </style>
+  /* small screens */
+  @media (max-width:420px){ .day-btn{ min-width:70px; padding:10px 12px; } .timer-box{ min-width:160px; } header{flex-direction:column; gap:8px; align-items:flex-start} }
+</style>
 </head>
 <body>
-  <h1>22 Days of Love Quest for My Princess Zansi 💕</h1>
-  <p class="countdown">Countdown to Your Birthday (Nov 5): <span id="timer"></span></p>
 
-  <div class="days-container" id="daysContainer"></div>
+<header>
+  <h1>🎁 22-Day Love Journey</h1>
+  <div class="controls">
+    <div id="adminBadge" style="display:none;" class="admin-indicator">Admin mode</div>
+    <button id="adminBtn" class="btn">Admin</button>
+    <button id="logoutBtn" class="btn ghost" style="display:none;">Log out</button>
+  </div>
+</header>
 
-  <button class="music-control" id="musicBtn">🔊 Music On</button>
+<p style="color:#ff6b81; margin-top:0;">All days are visible. Only today's or previous days are clickable. Future days remain locked.</p>
 
-  <audio id="bgMusic" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c6b4e7239d.mp3?filename=romantic-piano-ambient-112199.mp3" type="audio/mpeg">
-  </audio>
+<div id="days-container" aria-live="polite"></div>
 
-  <footer>Made with endless love by Ashish 💖</footer>
+<div class="timers" style="margin-top:18px;">
+  <div class="timer-box">
+    <h3>Next Surprise</h3>
+    <div class="time" id="surpriseTimer">--</div>
+  </div>
+  <div class="timer-box">
+    <h3>Birthday (Nov 5)</h3>
+    <div class="time" id="birthdayTimer">--</div>
+  </div>
+</div>
 
-  <script>
-    // ===== Countdown Timer =====
-    const countdown = document.getElementById("timer");
-    const targetDate = new Date("November 5, 2025 00:00:00").getTime();
+<!-- Admin modal (hidden by default) -->
+<div id="modalRoot" style="display:none;"></div>
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
+<script>
+/* ================== CONFIG ==================
+   Change the adminPassword to something private.
+   This is client-side only (for testing), so keep real secrets off this page.
+*/
+const adminPassword = 'test123'; // <<< change this to your private password
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+/* timeline config */
+const startDate = new Date('2025-10-14'); // Day 1 date
+const totalDays = 22;
+const birthdayDate = new Date('2025-11-05');
 
-      countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+/* NOTE: We use the visitor's local timezone (device time). If you need to force IST, we can adjust. */
 
-      if (distance < 0) {
-        countdown.innerHTML = "🎂 Happy Birthday My Love! 💕";
-      }
+/* ================ UTILS ================ */
+function daysBetween(a,b){
+  return Math.floor((b - a) / (1000*60*60*24));
+}
+
+/* ================ STATE ================ */
+const today = new Date();
+let currentDay = daysBetween(startDate, today) + 1;
+if(currentDay < 1) currentDay = 1;
+if(currentDay > totalDays) currentDay = totalDays;
+
+/* admin session stored in sessionStorage key 'lj_admin' */
+function isAdmin() { return sessionStorage.getItem('lj_admin') === '1'; }
+function setAdmin(flag){ sessionStorage.setItem('lj_admin', flag ? '1' : '0'); }
+
+/* ================ RENDER DAYS ================ */
+const container = document.getElementById('days-container');
+
+function renderDays(){
+  container.innerHTML = '';
+  const admin = isAdmin();
+
+  for(let i=1;i<=totalDays;i++){
+    const a = document.createElement('a');
+    a.className = 'day-btn';
+    a.textContent = 'Day ' + i;
+    // allow click if day <= currentDay OR admin mode
+    if(i <= currentDay || admin){
+      a.href = 'day' + i + '.html';
+      if(i === currentDay) a.classList.add('today');
+    } else {
+      a.classList.add('locked');
+      // show tooltip-ish title with unlock date
+      const unlockDate = new Date(startDate);
+      unlockDate.setDate(startDate.getDate() + (i-1));
+      const s = unlockDate.toLocaleDateString();
+      a.title = 'Unlocks on ' + s + ' at 12:00 AM';
     }
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
+    container.appendChild(a);
+  }
 
-    // ===== Day Buttons =====
-    const container = document.getElementById("daysContainer");
-    const totalDays = 22;
-    const password = "Zansi@7709";
+  // admin badge & logout visibility
+  document.getElementById('adminBadge').style.display = admin ? 'inline-block' : 'none';
+  document.getElementById('logoutBtn').style.display = admin ? 'inline-block' : 'none';
+  document.getElementById('adminBtn').style.display = admin ? 'none' : 'inline-block';
+}
 
-    for (let i = 1; i <= totalDays; i++) {
-      const btn = document.createElement("div");
-      btn.classList.add("day");
-      btn.textContent = `Day ${i}`;
-      if (i !== 1) btn.classList.add("locked");
+/* ================ TIMERS ================ */
+function getNextSurpriseMidnight(){
+  if(currentDay < totalDays){
+    const d = new Date(startDate);
+    d.setDate(startDate.getDate() + currentDay); // next day's date (day index = currentDay+1)
+    d.setHours(0,0,0,0);
+    return d;
+  } else {
+    const d = new Date(birthdayDate);
+    d.setHours(0,0,0,0);
+    return d;
+  }
+}
 
-      btn.addEventListener("click", () => {
-        if (i === 1) {
-          window.location.href = `day1.html`;
-        } else {
-          const input = prompt("🔐 This day is locked.\nEnter password to unlock:");
-          if (input === password) {
-            window.location.href = `day${i}.html`;
-          } else if (input !== null) {
-            alert("❌ Incorrect password, my love! Try again later 💞");
-          }
-        }
-      });
-      container.appendChild(btn);
-    }
+function formatCountdown(ms){
+  if(ms <= 0) return '0d 0h 0m 0s';
+  const d = Math.floor(ms / (1000*60*60*24));
+  const h = Math.floor((ms % (1000*60*60*24)) / (1000*60*60));
+  const m = Math.floor((ms % (1000*60*60)) / (1000*60));
+  const s = Math.floor((ms % (1000*60)) / 1000);
+  return `${d}d ${h}h ${m}m ${s}s`;
+}
 
-    // ===== Music Control =====
-    const music = document.getElementById("bgMusic");
-    const musicBtn = document.getElementById("musicBtn");
-    let playing = false;
+function updateTimers(){
+  const now = new Date();
+  const next = getNextSurpriseMidnight();
+  document.getElementById('surpriseTimer').textContent = formatCountdown(next - now);
 
-    musicBtn.addEventListener("click", () => {
-      if (!playing) {
-        music.play();
-        playing = true;
-        musicBtn.textContent = "🔇 Music Off";
-      } else {
-        music.pause();
-        playing = false;
-        musicBtn.textContent = "🔊 Music On";
-      }
-    });
-  </script>
+  const bd = new Date(birthdayDate); bd.setHours(0,0,0,0);
+  document.getElementById('birthdayTimer').textContent = formatCountdown(bd - now);
+
+  // if reached or passed next surprise, recalc currentDay and re-render (so UI auto-updates around midnight)
+  if(now >= next){
+    // recompute currentDay fresh
+    const t = new Date();
+    currentDay = daysBetween(startDate, t) + 1;
+    if(currentDay < 1) currentDay = 1;
+    if(currentDay > totalDays) currentDay = totalDays;
+    renderDays();
+  }
+}
+
+/* ================ ADMIN FLOW ================ */
+const modalRoot = document.getElementById('modalRoot');
+
+function openAdminModal(){
+  modalRoot.innerHTML = `
+    <div class="modal-backdrop" id="modalBackdrop">
+      <div class="modal" role="dialog" aria-modal="true">
+        <h4>Admin Access</h4>
+        <p style="margin:6px 0 12px; color:#333;">Enter password to unlock all days for testing.</p>
+        <input id="adminPass" type="password" placeholder="Password" />
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button id="cancelBtn" class="btn ghost">Cancel</button>
+          <button id="submitBtn" class="btn">Unlock</button>
+        </div>
+      </div>
+    </div>
+  `;
+  modalRoot.style.display = 'block';
+  document.getElementById('adminPass').focus();
+
+  document.getElementById('cancelBtn').onclick = closeModal;
+  document.getElementById('submitBtn').onclick = tryAdmin;
+  document.getElementById('modalBackdrop').addEventListener('click', function(e){
+    if(e.target.id === 'modalBackdrop') closeModal();
+  });
+  document.getElementById('adminPass').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') tryAdmin();
+  });
+}
+
+function closeModal(){
+  modalRoot.style.display = 'none';
+  modalRoot.innerHTML = '';
+}
+
+function tryAdmin(){
+  const val = document.getElementById('adminPass').value || '';
+  if(val === adminPassword){
+    setAdmin(true);
+    closeModal();
+    renderDays();
+    alert('Admin unlocked — all days are clickable for testing.');
+  } else {
+    // small shake feedback (simple)
+    const inp = document.getElementById('adminPass');
+    inp.style.borderColor = '#ff6b81';
+    setTimeout(()=> inp.style.borderColor = '', 900);
+    inp.value = '';
+    inp.focus();
+  }
+}
+
+document.getElementById('adminBtn').addEventListener('click', openAdminModal);
+document.getElementById('logoutBtn').addEventListener('click', function(){
+  setAdmin(false);
+  renderDays();
+});
+
+/* ================ INIT ================ */
+renderDays();
+updateTimers();
+setInterval(updateTimers, 1000);
+
+/* Optional: if you want admin mode to persist across tabs, change sessionStorage -> localStorage
+   but sessionStorage is safer for temporary testing and clears on tab close. */
+</script>
+
 </body>
 </html>
